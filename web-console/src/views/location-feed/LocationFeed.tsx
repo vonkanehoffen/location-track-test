@@ -41,7 +41,7 @@ export function LocationFeed() {
   //   },
   // });
 
-  const [{ data, error }] = useSubscription(
+  const [{ data, error, fetching }] = useSubscription(
     { query: locationSubscription },
     handleSubscription
   );
@@ -72,6 +72,8 @@ export function LocationFeed() {
           })}
         </tbody>
       </table>
+      <pre className="error">{JSON.stringify(error, null, 2)}</pre>
+      {fetching && <pre>Fetching...</pre>}
     </main>
   );
 }
