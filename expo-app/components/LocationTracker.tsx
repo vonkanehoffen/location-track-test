@@ -3,6 +3,22 @@ import { StyleSheet, Button, View, Text } from "react-native";
 import * as Location from "expo-location";
 import { LocationObject } from "expo-location";
 import { timeout } from "../lib/helpers";
+import { graphql } from "../lib/gql";
+import { useMutation } from "urql";
+
+const InsertLocation = graphql(`
+  mutation InsertLocation($l: journey_location_insert_input!) {
+    insert_journey_location(objects: [$l]) {
+      affected_rows
+      returning {
+        id
+        journey_id
+        location
+        timestamp
+      }
+    }
+  }
+`);
 
 export function LocationTracker() {
   const [track, setTrack] = useState(false);
@@ -10,6 +26,7 @@ export function LocationTracker() {
   const [location, setLocation] = useState<null | LocationObject>(null);
   const [ready, setReady] = useState(true);
   const [errorMsg, setErrorMsg] = useState<null | string>(null);
+  const [insertLocationResult, insertLocation] = useMutation(InsertLocation);
 
   useEffect(() => {
     (async () => {
@@ -31,40 +48,19 @@ export function LocationTracker() {
   // Makes location call, saves, then waits arbitrary time until saying ready to do it again
   const getLocation = async () => {
     setReady(false);
-    const wait = Math.random() * 2000;
-    console.log("wait", wait);
-    const loc = await timeout(wait);
+    const newLocation = await Location.getCurrentPositionAsync({});
+    setLocation(newLocation);
+    const result = insertLocation({
+      l: {
+        journey_id: "1",
+        location: `${newLocation.coords.latitude}, ${newLocation.coords.longitude}`,
+      },
+    });
+    console.log("result ", result);
     setCount(count + 1);
     await timeout(2000);
     setReady(true);
   };
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (track) setCount(count + 1);
-  //   }, 1000);
-  //   return () => clearInterval(interval);
-  // });
-
-  // const getLocation = async (start: boolean) => {
-  //   console.log("getLocation", { start, track });
-  //   if (start || track) {
-  //     console.log("track true");
-  //     const newLocation = await Location.getCurrentPositionAsync({});
-  //     setLocation(newLocation);
-  //     setCount(count + 1);
-  //     setTimeout(getLocation, 2000);
-  //   }
-  // };
-
-  // const toggleTracking = async () => {
-  //   if (track) {
-  //     setTrack(false);
-  //   } else {
-  //     setTrack(true);
-  //     getLocation(true);
-  //   }
-  // };
 
   return (
     <View>
@@ -77,6 +73,14 @@ export function LocationTracker() {
       </Text>
       <Text>Count = {count}</Text>
       <Text>ready = {ready ? "true" : "false"}</Text>
+      <Text>
+        Mutation result{" "}
+        {JSON.stringify(
+          insertLocationResult.data?.insert_journey_location?.returning,
+          null,
+          2
+        )}
+      </Text>
     </View>
   );
 }
