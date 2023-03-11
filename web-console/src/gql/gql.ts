@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query all_location_data($limit: Int!) {\n    journey_location(limit: $limit) {\n      id\n      journey_id\n      location\n    }\n  }\n": types.All_Location_DataDocument,
+    "\n  subscription location_sub {\n    journey_location {\n      id\n      journey_id\n      location\n    }\n  }\n": types.Location_SubDocument,
 };
 
 /**
@@ -34,6 +35,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query all_location_data($limit: Int!) {\n    journey_location(limit: $limit) {\n      id\n      journey_id\n      location\n    }\n  }\n"): (typeof documents)["\n  query all_location_data($limit: Int!) {\n    journey_location(limit: $limit) {\n      id\n      journey_id\n      location\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  subscription location_sub {\n    journey_location {\n      id\n      journey_id\n      location\n    }\n  }\n"): (typeof documents)["\n  subscription location_sub {\n    journey_location {\n      id\n      journey_id\n      location\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

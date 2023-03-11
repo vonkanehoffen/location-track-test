@@ -846,5 +846,11 @@ export type All_Location_DataQueryVariables = Exact<{
 
 export type All_Location_DataQuery = { __typename?: 'query_root', journey_location: Array<{ __typename?: 'journey_location', id: number, journey_id: string, location: string }> };
 
+export type Location_SubSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type Location_SubSubscription = { __typename?: 'subscription_root', journey_location: Array<{ __typename?: 'journey_location', id: number, journey_id: string, location: string }> };
+
 
 export const All_Location_DataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"all_location_data"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"journey_location"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"journey_id"}},{"kind":"Field","name":{"kind":"Name","value":"location"}}]}}]}}]} as unknown as DocumentNode<All_Location_DataQuery, All_Location_DataQueryVariables>;
+export const Location_SubDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"location_sub"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"journey_location"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"journey_id"}},{"kind":"Field","name":{"kind":"Name","value":"location"}}]}}]}}]} as unknown as DocumentNode<Location_SubSubscription, Location_SubSubscriptionVariables>;
