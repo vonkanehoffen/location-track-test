@@ -8,7 +8,7 @@ export function LocationTracker() {
   const [track, setTrack] = useState(false);
   const [count, setCount] = useState(0);
   const [location, setLocation] = useState<null | LocationObject>(null);
-  const [fetching, setFetching] = useState(false);
+  const [ready, setReady] = useState(true);
   const [errorMsg, setErrorMsg] = useState<null | string>(null);
 
   useEffect(() => {
@@ -23,17 +23,21 @@ export function LocationTracker() {
 
   useEffect(() => {
     console.log("called");
-    if (track && !fetching) {
-      (async () => {
-        setFetching(true);
-        const wait = Math.random() * 2000;
-        console.log("wait", wait);
-        const loc = await timeout(wait);
-        setCount(count + 1);
-        setFetching(false);
-      })();
+    if (track && ready) {
+      getLocation();
     }
-  }, [track, fetching]);
+  }, [track, ready]);
+
+  // Makes location call, saves, then waits arbitrary time until saying ready to do it again
+  const getLocation = async () => {
+    setReady(false);
+    const wait = Math.random() * 2000;
+    console.log("wait", wait);
+    const loc = await timeout(wait);
+    setCount(count + 1);
+    await timeout(2000);
+    setReady(true);
+  };
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -72,7 +76,7 @@ export function LocationTracker() {
         Lat: {location?.coords.latitude} / Lon: {location?.coords.longitude}
       </Text>
       <Text>Count = {count}</Text>
-      <Text>fetchingLocation = {fetching}</Text>
+      <Text>ready = {ready ? "true" : "false"}</Text>
     </View>
   );
 }
