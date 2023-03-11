@@ -14,7 +14,7 @@ const allLocationData = graphql(`
 
 const locationSubscription = graphql(`
   subscription location_sub {
-    journey_location {
+    journey_location(order_by: { id: desc }, limit: 20) {
       id
       journey_id
       location
