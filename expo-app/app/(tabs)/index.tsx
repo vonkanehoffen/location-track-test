@@ -1,4 +1,6 @@
 import { StyleSheet } from "react-native";
+import AppStateExample from "../../components/AppStateExample";
+import { LocationOneOff } from "../../components/LocationOneOff";
 
 import { LocationTracker } from "../../components/LocationTracker";
 import { Text, View } from "../../components/Themed";
@@ -12,7 +14,9 @@ export default function LocationTrackingScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
+      <LocationOneOff />
       <LocationTracker />
+      <AppStateExample />
     </View>
   );
 }

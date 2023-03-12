@@ -20,8 +20,6 @@ const InsertLocation = graphql(`
   }
 `);
 
-// TODO: LOCATION_FOREGROUND permission is required to do this operation. - intermittent
-
 export function LocationTracker() {
   const [track, setTrack] = useState(false);
   const [count, setCount] = useState(0);
@@ -54,6 +52,7 @@ export function LocationTracker() {
     try {
       console.log("start getCurrentPositionAsync");
       // Note getLastKnownPositionAsync is faster than getCurrentPositionAsync. Latter doesn't ersolve indoors on Android?
+      // Think we need one current pos call first?
       const newLocation = await Location.getLastKnownPositionAsync({});
       console.log("finish getCurrentPositionAsync");
       setLocation(newLocation);
@@ -65,6 +64,8 @@ export function LocationTracker() {
           },
         });
         console.log("result ", result);
+      } else {
+        console.log("no new location");
       }
       setCount(count + 1);
     } catch (e) {
