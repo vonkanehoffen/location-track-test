@@ -20,6 +20,8 @@ const InsertLocation = graphql(`
   }
 `);
 
+// TODO: LOCATION_FOREGROUND permission is required to do this operation. - intermittent
+
 export function LocationTracker() {
   const [track, setTrack] = useState(false);
   const [count, setCount] = useState(0);
@@ -48,16 +50,20 @@ export function LocationTracker() {
   // Makes location call, saves, then waits arbitrary time until saying ready to do it again
   const getLocation = async () => {
     setReady(false);
-    const newLocation = await Location.getCurrentPositionAsync({});
-    setLocation(newLocation);
-    const result = insertLocation({
-      l: {
-        journey_id: "1",
-        location: `${newLocation.coords.latitude}, ${newLocation.coords.longitude}`,
-      },
-    });
-    console.log("result ", result);
-    setCount(count + 1);
+    try {
+      const newLocation = await Location.getCurrentPositionAsync({});
+      setLocation(newLocation);
+      const result = insertLocation({
+        l: {
+          journey_id: "1",
+          location: `${newLocation.coords.latitude}, ${newLocation.coords.longitude}`,
+        },
+      });
+      console.log("result ", result);
+      setCount(count + 1);
+    } catch (e) {
+      console.log("Silent location fail", e);
+    }
     await timeout(2000);
     setReady(true);
   };
