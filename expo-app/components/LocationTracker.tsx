@@ -53,7 +53,9 @@ export function LocationTracker() {
       console.log("start getCurrentPositionAsync");
       // Note getLastKnownPositionAsync is faster than getCurrentPositionAsync. Latter doesn't ersolve indoors on Android?
       // Think we need one current pos call first?
-      const newLocation = await Location.getLastKnownPositionAsync({});
+      // const newLocation = await Location.getLastKnownPositionAsync({});
+      const newLocation = await Location.getCurrentPositionAsync({});
+
       console.log("finish getCurrentPositionAsync");
       setLocation(newLocation);
       if (newLocation) {
