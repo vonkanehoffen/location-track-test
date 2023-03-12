@@ -18,6 +18,7 @@ const locationSubscription = graphql(`
       id
       journey_id
       location
+      timestamp
     }
   }
 `);
@@ -57,16 +58,17 @@ export function LocationFeed() {
             <th>id</th>
             <th>journey_id</th>
             <th>location</th>
+            <th>timestamp</th>
           </tr>
         </thead>
         <tbody>
           {data?.map((location) => {
-            console.log("WAT", location.id);
             return (
               <tr key={location.id}>
                 <td>{location.id}</td>
                 <td>{location.journey_id}</td>
                 <td>{location.location}</td>
+                <td>{location.timestamp}</td>
               </tr>
             );
           })}
