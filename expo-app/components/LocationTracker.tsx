@@ -49,17 +49,23 @@ export function LocationTracker() {
 
   // Makes location call, saves, then waits arbitrary time until saying ready to do it again
   const getLocation = async () => {
+    console.log("getLocation");
     setReady(false);
     try {
-      const newLocation = await Location.getCurrentPositionAsync({});
+      console.log("start getCurrentPositionAsync");
+      // Note getLastKnownPositionAsync is faster than getCurrentPositionAsync. Latter doesn't ersolve indoors on Android?
+      const newLocation = await Location.getLastKnownPositionAsync({});
+      console.log("finish getCurrentPositionAsync");
       setLocation(newLocation);
-      const result = insertLocation({
-        l: {
-          journey_id: "1",
-          location: `${newLocation.coords.latitude}, ${newLocation.coords.longitude}`,
-        },
-      });
-      console.log("result ", result);
+      if (newLocation) {
+        const result = insertLocation({
+          l: {
+            journey_id: "1",
+            location: `${newLocation.coords.latitude}, ${newLocation.coords.longitude}`,
+          },
+        });
+        console.log("result ", result);
+      }
       setCount(count + 1);
     } catch (e) {
       console.log("Silent location fail", e);
