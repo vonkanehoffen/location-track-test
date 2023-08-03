@@ -10,6 +10,13 @@
         "resourceClass": "m1-medium"
       }
     },
+    "development-ios-sim": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
     "preview": {
       "distribution": "internal",
       "ios": {
