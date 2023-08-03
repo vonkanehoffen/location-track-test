@@ -4,6 +4,8 @@ import { LocationOneOff } from "./components/LocationOneOff";
 import { LocationTracker } from "./components/LocationTracker";
 import { Provider } from "urql";
 import { client } from "./lib/client";
+import { LocationTrackerBg } from "./components/LocationTrackerBg";
+import AppStateExample from "./components/AppStateExample";
 
 export default function App() {
   return (
@@ -11,6 +13,8 @@ export default function App() {
       <View style={styles.container}>
         <LocationOneOff />
         <LocationTracker />
+        <LocationTrackerBg />
+        <AppStateExample />
         <StatusBar style="auto" />
       </View>
     </Provider>
