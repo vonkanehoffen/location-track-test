@@ -18,7 +18,10 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
+    "@react-native-async-storage/async-storage": "^1.19.1",
     "@react-navigation/native": "^6.0.2",
+    "@react-navigation/native-stack": "^6.9.13",
+    "dripsy": "^4.3.3",
     "expo": "^49.0.6",
     "expo-background-fetch": "~11.3.0",
     "expo-dev-client": "~2.4.6",
@@ -30,6 +33,7 @@
     "expo-system-ui": "~2.4.0",
     "expo-task-manager": "~11.3.0",
     "expo-web-browser": "~12.3.2",
+    "geodist": "^0.2.1",
     "graphql": "^15.8.0",
     "graphql-ws": "^5.12.0",
     "react": "18.2.0",

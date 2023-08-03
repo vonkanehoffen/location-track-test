@@ -26,3 +26,5 @@ GraphQL types generated in both. Admin secret in `.env` to auth Hasura introspec
 ```
 npm run codegen:watch
 ```
+
+Also see https://github.com/byCedric/office-marathon

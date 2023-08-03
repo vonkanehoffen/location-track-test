@@ -1,3 +1,5 @@
+import React, { PropsWithChildren } from "react";
+import { Provider } from "urql";
 import { createClient, defaultExchanges, subscriptionExchange } from "urql";
 import { createClient as createWSClient } from "graphql-ws";
 
@@ -27,3 +29,7 @@ export const client = createClient({
   //   };
   // },
 });
+
+export const UrqlProvider = ({ children }: PropsWithChildren) => {
+  return <Provider value={client}>{children}</Provider>;
+};
