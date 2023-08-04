@@ -26,7 +26,7 @@ export async function startTracking() {
     timeInterval: 15 * 1000,
     // android behavior
     foregroundService: {
-      notificationTitle: "Office marathon is active",
+      notificationTitle: "Locationm track test active",
       notificationBody: "Monitoring your location to measure total distance",
       notificationColor: "#333333",
     },
@@ -34,7 +34,7 @@ export async function startTracking() {
     activityType: Location.ActivityType.Fitness,
     showsBackgroundLocationIndicator: true,
   });
-  console.log("[tracking]", "started background location task");
+  console.log("[tracking]", "started background location task ere");
 }
 
 /**
