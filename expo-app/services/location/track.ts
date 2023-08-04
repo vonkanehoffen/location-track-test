@@ -2,6 +2,7 @@ import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
 
 import { addLocation } from "./storage";
+import { sendLocation } from "./server-state";
 
 /**
  * The unique name of the background location task.
@@ -26,7 +27,7 @@ export async function startTracking() {
     timeInterval: 15 * 1000,
     // android behavior
     foregroundService: {
-      notificationTitle: "Locationm track test active",
+      notificationTitle: "Location track test active",
       notificationBody: "Monitoring your location to measure total distance",
       notificationColor: "#333333",
     },
@@ -66,6 +67,7 @@ TaskManager.defineTask(locationTaskName, async (event) => {
     // have to add it sequentially, parses/serializes existing JSON
     for (const location of locations) {
       await addLocation(location);
+      await sendLocation(location);
     }
   } catch (error) {
     console.log(

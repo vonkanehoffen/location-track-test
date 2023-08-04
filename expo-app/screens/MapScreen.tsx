@@ -11,7 +11,13 @@ type MapScreenProps = NativeStackScreenProps<StackParamList, "Map">;
 export function MapScreen({ navigation }: MapScreenProps) {
   const locations = useLocationData();
 
-  if (!locations?.length) return <Paragraph>No locations</Paragraph>;
+  if (!locations?.length)
+    return (
+      <Box>
+        <Paragraph>No locations</Paragraph>
+        <Button onPress={() => navigation.navigate("Distance")}>Go back</Button>
+      </Box>
+    );
 
   const coords = locations.map((location) => ({
     latitude: location.coords.latitude,
