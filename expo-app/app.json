@@ -18,7 +18,10 @@
       "infoPlist": {
         "UIBackgroundModes": ["location", "fetch"]
       },
-      "bundleIdentifier": "com.liftshare.locationtracktest"
+      "bundleIdentifier": "com.liftshare.locationtracktest",
+      "config": {
+        "googleMapsApiKey": "AIzaSyCjl0Ks7HJoDtdtiD50up1giWlreEtvkR8"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -30,7 +33,12 @@
         "ACCESS_FINE_LOCATION",
         "FOREGROUND_SERVICE"
       ],
-      "package": "com.liftshare.locationtracktest"
+      "package": "com.liftshare.locationtracktest",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDRs7FZteLOg0czhgps9EenTpW70qcY8sY"
+        }
+      }
     },
     "web": {
       "bundler": "metro",

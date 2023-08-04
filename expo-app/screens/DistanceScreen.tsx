@@ -8,8 +8,12 @@ import {
   useLocationDistance,
   useLocationTracking,
 } from "../services/location";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackParamList } from "../providers/NavigationProvider";
 
-export function DistanceScreen() {
+type DistanceScreenProps = NativeStackScreenProps<StackParamList, "Distance">;
+
+export function DistanceScreen({ navigation }: DistanceScreenProps) {
   const locations = useLocationData();
   const tracking = useLocationTracking();
   const distance = useLocationDistance(locations);
@@ -34,6 +38,9 @@ export function DistanceScreen() {
         )}
         <Button variant="primary" onPress={tracking.clearTracking}>
           Reset data
+        </Button>
+        <Button variant="primary" onPress={() => navigation.navigate("Map")}>
+          Map
         </Button>
       </Box>
       <DistanceLocationList locations={locations} />
