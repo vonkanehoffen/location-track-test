@@ -28,3 +28,12 @@ npm run codegen:watch
 ```
 
 Also see https://github.com/byCedric/office-marathon
+
+WIP
+
+Location tracjing kinda working in bg?
+Neither new dev build or prod apk build show fg notification though
+
+Next: Try build of actual office marathon app? ...although this is most of it so f knows...
+
+Actually try adding expo notifications next https://github.com/expo/expo/issues/22445

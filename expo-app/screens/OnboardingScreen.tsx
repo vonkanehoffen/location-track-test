@@ -4,6 +4,7 @@ import { useCallback, useEffect } from "react";
 
 import { StackParamList } from "../providers/NavigationProvider";
 import { Box, Button, Spinner, Title, Paragraph } from "../providers/theme";
+import { usePermissions } from "expo-notifications";
 
 type OnboardingScreenProps = NativeStackScreenProps<
   StackParamList,
@@ -12,6 +13,7 @@ type OnboardingScreenProps = NativeStackScreenProps<
 
 export function OnboardingScreen({ navigation }: OnboardingScreenProps) {
   const [permission, askPermission] = useForegroundPermissions();
+  const [notifPermission, askNotifPermission] = usePermissions();
 
   const onContinue = useCallback(() => {
     navigation.navigate("Distance");
@@ -50,7 +52,12 @@ export function OnboardingScreen({ navigation }: OnboardingScreenProps) {
       {!permission ? (
         <Spinner />
       ) : (
-        <Button onPress={askPermission}>Grant permission</Button>
+        <>
+          <Button onPress={askNotifPermission}>
+            Grant{notifPermission && "ed"} notification permission
+          </Button>
+          <Button onPress={askPermission}>Grant permission</Button>
+        </>
       )}
     </Box>
   );
