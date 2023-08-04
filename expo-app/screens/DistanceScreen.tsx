@@ -21,7 +21,7 @@ export function DistanceScreen({ navigation }: DistanceScreenProps) {
   return (
     <Box variant="page">
       <Box>
-        <Title>Your office marathon</Title>
+        <Title>Location Track Test</Title>
         {distance === 0 ? (
           <Paragraph>
             You didn't walk yet, start the location tracking and start walking.
