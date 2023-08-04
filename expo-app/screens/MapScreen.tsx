@@ -4,14 +4,20 @@ import { StyleSheet } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Polyline } from "react-native-maps";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../providers/NavigationProvider";
-import { useLocationData } from "../services/location";
+import { useLocations } from "../services/location/server-state";
 
 type MapScreenProps = NativeStackScreenProps<StackParamList, "Map">;
 
 export function MapScreen({ navigation }: MapScreenProps) {
-  const locations = useLocationData();
+  const [result] = useLocations("1");
+  const coords = result.data?.journey_location.map((l) => ({
+    latitude: l.location.split(",")[0],
+    longitude: l.location.split(",")[1],
+  }));
 
-  if (!locations?.length)
+  console.log("locations", coords);
+
+  if (!coords?.length)
     return (
       <Box>
         <Paragraph>No locations</Paragraph>
@@ -19,10 +25,10 @@ export function MapScreen({ navigation }: MapScreenProps) {
       </Box>
     );
 
-  const coords = locations.map((location) => ({
-    latitude: location.coords.latitude,
-    longitude: location.coords.longitude,
-  }));
+  // const coords = locations.map((location) => ({
+  //   latitude: location.coords.latitude,
+  //   longitude: location.coords.longitude,
+  // }));
 
   return (
     <Box variant="page">
@@ -34,8 +40,8 @@ export function MapScreen({ navigation }: MapScreenProps) {
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         region={{
-          latitude: locations[locations.length - 1].coords.latitude,
-          longitude: locations[locations.length - 1].coords.longitude,
+          latitude: coords[coords.length - 1].latitude,
+          longitude: coords[coords.length - 1].longitude,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
