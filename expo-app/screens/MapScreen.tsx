@@ -28,8 +28,8 @@ export function MapScreen({ navigation }: MapScreenProps) {
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         region={{
-          latitude: locations[0].coords.latitude,
-          longitude: locations[0].coords.longitude,
+          latitude: locations[locations.length - 1].coords.latitude,
+          longitude: locations[locations.length - 1].coords.longitude,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
