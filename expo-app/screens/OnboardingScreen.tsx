@@ -16,7 +16,7 @@ export function OnboardingScreen({ navigation }: OnboardingScreenProps) {
   const [notifPermission, askNotifPermission] = usePermissions();
 
   const onContinue = useCallback(() => {
-    navigation.navigate("Distance");
+    navigation.navigate("Map");
   }, [navigation]);
 
   useEffect(() => {
