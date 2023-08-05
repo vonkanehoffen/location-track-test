@@ -4,48 +4,38 @@ import { StyleSheet } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Polyline } from "react-native-maps";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../providers/NavigationProvider";
-import { useLocations } from "../services/location/server-state";
+import { useLocationData } from "../services/location";
 
 type MapScreenProps = NativeStackScreenProps<StackParamList, "Map">;
 
 export function MapScreen({ navigation }: MapScreenProps) {
-  const [result, reexecuteQuery] = useLocations("1");
-  const coords = result.data?.journey_location.map((l) => ({
-    latitude: l.location.split(",")[0],
-    longitude: l.location.split(",")[1],
-  }));
+  const locations = useLocationData();
 
-  const refetch = () => {
-    reexecuteQuery({ requestPolicy: "network-only" });
-  };
-
-  if (!coords?.length)
+  if (!locations?.length)
     return (
       <Box>
         <Paragraph>No locations</Paragraph>
         <Button onPress={() => navigation.navigate("Distance")}>Go back</Button>
-        <Button onPress={refetch}>Refetch</Button>
       </Box>
     );
 
-  // const coords = locations.map((location) => ({
-  //   latitude: location.coords.latitude,
-  //   longitude: location.coords.longitude,
-  // }));
+  const coords = locations.map((location) => ({
+    latitude: location.coords.latitude,
+    longitude: location.coords.longitude,
+  }));
 
   return (
     <Box variant="page">
-      <Box style={{ paddingTop: 90 }}>
+      <Box>
         <Button onPress={() => navigation.navigate("Distance")}>Go back</Button>
-        <Button onPress={refetch}>Refetch</Button>
       </Box>
 
       <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         region={{
-          latitude: coords[coords.length - 1].latitude,
-          longitude: coords[coords.length - 1].longitude,
+          latitude: locations[locations.length - 1].coords.latitude,
+          longitude: locations[locations.length - 1].coords.longitude,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}

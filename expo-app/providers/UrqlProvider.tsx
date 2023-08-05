@@ -19,14 +19,14 @@ const cache = offlineExchange({
     /* ... */
   },
   optimistic: {
-    insert_journey_location(args, cache, info) {
-      console.log("optimistic", args);
-      return {
-        __typename: "journey_location",
-        id: args.id,
-        location: "0,0",
-      };
-    },
+    // insert_journey_location(args, cache, info) {
+    //   console.log("optimistic", args);
+    //   return {
+    //     __typename: "journey_location",
+    //     id: args.id,
+    //     location: "0,0",
+    //   };
+    // },
   },
 });
 
