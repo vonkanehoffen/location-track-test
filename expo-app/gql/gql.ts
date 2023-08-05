@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation InsertLocation($l: journey_location_insert_input!) {\n    insert_journey_location(objects: [$l]) {\n      affected_rows\n      returning {\n        id\n        journey_id\n        location\n        timestamp\n      }\n    }\n  }\n": types.InsertLocationDocument,
+    "\n  query Locations {\n    journey_location(order_by: { id: desc }, limit: 2000) {\n      id\n      location\n    }\n  }\n": types.LocationsDocument,
 };
 
 /**
@@ -34,6 +35,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation InsertLocation($l: journey_location_insert_input!) {\n    insert_journey_location(objects: [$l]) {\n      affected_rows\n      returning {\n        id\n        journey_id\n        location\n        timestamp\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation InsertLocation($l: journey_location_insert_input!) {\n    insert_journey_location(objects: [$l]) {\n      affected_rows\n      returning {\n        id\n        journey_id\n        location\n        timestamp\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query Locations {\n    journey_location(order_by: { id: desc }, limit: 2000) {\n      id\n      location\n    }\n  }\n"): (typeof documents)["\n  query Locations {\n    journey_location(order_by: { id: desc }, limit: 2000) {\n      id\n      location\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

@@ -1,9 +1,9 @@
-import { gql } from "@urql/core";
+import { graphql } from "../../gql";
 import { client } from "../../providers/UrqlProvider";
 import { LocationObject } from "expo-location";
 import { useQuery } from "urql";
 
-const InsertLocationQuery = gql`
+const InsertLocationQuery = graphql(`
   mutation InsertLocation($l: journey_location_insert_input!) {
     insert_journey_location(objects: [$l]) {
       affected_rows
@@ -15,7 +15,7 @@ const InsertLocationQuery = gql`
       }
     }
   }
-`;
+`);
 
 export const sendLocation = async (location: LocationObject) => {
   const result = await client.mutation(InsertLocationQuery, {
@@ -28,13 +28,14 @@ export const sendLocation = async (location: LocationObject) => {
   console.log("[tracking]", "Sent new location", result);
 };
 
-const LocationsQuery = gql`
+const LocationsQuery = graphql(`
   query Locations {
     journey_location(order_by: { id: desc }, limit: 2000) {
+      id
       location
     }
   }
-`;
+`);
 
 export const useLocations = (journeyId: string) => {
   return useQuery({

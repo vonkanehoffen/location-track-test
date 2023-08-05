@@ -9,19 +9,22 @@ import { useLocations } from "../services/location/server-state";
 type MapScreenProps = NativeStackScreenProps<StackParamList, "Map">;
 
 export function MapScreen({ navigation }: MapScreenProps) {
-  const [result] = useLocations("1");
+  const [result, reexecuteQuery] = useLocations("1");
   const coords = result.data?.journey_location.map((l) => ({
     latitude: l.location.split(",")[0],
     longitude: l.location.split(",")[1],
   }));
 
-  console.log("locations", coords);
+  const refetch = () => {
+    reexecuteQuery({ requestPolicy: "network-only" });
+  };
 
   if (!coords?.length)
     return (
       <Box>
         <Paragraph>No locations</Paragraph>
         <Button onPress={() => navigation.navigate("Distance")}>Go back</Button>
+        <Button onPress={refetch}>Refetch</Button>
       </Box>
     );
 
@@ -32,8 +35,9 @@ export function MapScreen({ navigation }: MapScreenProps) {
 
   return (
     <Box variant="page">
-      <Box>
+      <Box style={{ paddingTop: 90 }}>
         <Button onPress={() => navigation.navigate("Distance")}>Go back</Button>
+        <Button onPress={refetch}>Refetch</Button>
       </Box>
 
       <MapView

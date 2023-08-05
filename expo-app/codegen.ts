@@ -14,12 +14,17 @@ const config: CodegenConfig = {
       },
     },
   ],
-  documents: "components/**/*.tsx",
+  documents: "./services/**/*.ts",
   ignoreNoDocuments: true,
   generates: {
-    "lib/gql/": {
+    "./gql/": {
       preset: "client",
-      plugins: [],
+    },
+    "./gql/schema.json": {
+      plugins: ["introspection"],
+      config: {
+        minify: true,
+      },
     },
   },
 };

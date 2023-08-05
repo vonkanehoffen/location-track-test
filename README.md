@@ -33,6 +33,6 @@ Also see https://github.com/byCedric/office-marathon
 
 - Location tracking works for both platforms on dev builds
 - FG service notification on Android displaying
-- Still need to check real world perf in bg + locked
-- Maps installed
-- NEXT: Plot GPS from local storage on map
+- Works real world on Android
+- URQL in task works + plots back on map.
+- NEXT: offline exchanges + cache for urql

@@ -1,11 +1,38 @@
 import React, { PropsWithChildren } from "react";
 import { Provider } from "urql";
-import { Client, cacheExchange, fetchExchange } from "@urql/core";
+import { Client, fetchExchange } from "@urql/core";
 import { config } from "../config";
+import { makeAsyncStorage } from "@urql/storage-rn";
+import { offlineExchange } from "@urql/exchange-graphcache";
+import schema from "../gql/schema.json";
+
+const storage = makeAsyncStorage({
+  dataKey: "graphcache-data", // The AsyncStorage key used for the data (defaults to graphcache-data)
+  metadataKey: "graphcache-metadata", // The AsyncStorage key used for the metadata (defaults to graphcache-metadata)
+  maxAge: 7, // How long to persist the data in storage (defaults to 7 days)
+});
+
+const cache = offlineExchange({
+  schema,
+  storage,
+  updates: {
+    /* ... */
+  },
+  optimistic: {
+    insert_journey_location(args, cache, info) {
+      console.log("optimistic", args);
+      return {
+        __typename: "journey_location",
+        id: args.id,
+        location: "0,0",
+      };
+    },
+  },
+});
 
 export const client = new Client({
   url: config.apiBase,
-  exchanges: [cacheExchange, fetchExchange],
+  exchanges: [cache, fetchExchange],
 });
 
 // import { createClient, defaultExchanges, subscriptionExchange } from "urql";

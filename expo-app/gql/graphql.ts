@@ -5,60 +5,64 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  timestamptz: any;
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  geography: { input: any; output: any; }
+  geometry: { input: any; output: any; }
+  timestamptz: { input: any; output: any; }
 };
 
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['Int']>;
-  _gt?: InputMaybe<Scalars['Int']>;
-  _gte?: InputMaybe<Scalars['Int']>;
-  _in?: InputMaybe<Array<Scalars['Int']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['Int']>;
-  _lte?: InputMaybe<Scalars['Int']>;
-  _neq?: InputMaybe<Scalars['Int']>;
-  _nin?: InputMaybe<Array<Scalars['Int']>>;
+  _eq?: InputMaybe<Scalars['Int']['input']>;
+  _gt?: InputMaybe<Scalars['Int']['input']>;
+  _gte?: InputMaybe<Scalars['Int']['input']>;
+  _in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Int']['input']>;
+  _lte?: InputMaybe<Scalars['Int']['input']>;
+  _neq?: InputMaybe<Scalars['Int']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['String']>;
-  _gt?: InputMaybe<Scalars['String']>;
-  _gte?: InputMaybe<Scalars['String']>;
+  _eq?: InputMaybe<Scalars['String']['input']>;
+  _gt?: InputMaybe<Scalars['String']['input']>;
+  _gte?: InputMaybe<Scalars['String']['input']>;
   /** does the column match the given case-insensitive pattern */
-  _ilike?: InputMaybe<Scalars['String']>;
-  _in?: InputMaybe<Array<Scalars['String']>>;
+  _ilike?: InputMaybe<Scalars['String']['input']>;
+  _in?: InputMaybe<Array<Scalars['String']['input']>>;
   /** does the column match the given POSIX regular expression, case insensitive */
-  _iregex?: InputMaybe<Scalars['String']>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _iregex?: InputMaybe<Scalars['String']['input']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   /** does the column match the given pattern */
-  _like?: InputMaybe<Scalars['String']>;
-  _lt?: InputMaybe<Scalars['String']>;
-  _lte?: InputMaybe<Scalars['String']>;
-  _neq?: InputMaybe<Scalars['String']>;
+  _like?: InputMaybe<Scalars['String']['input']>;
+  _lt?: InputMaybe<Scalars['String']['input']>;
+  _lte?: InputMaybe<Scalars['String']['input']>;
+  _neq?: InputMaybe<Scalars['String']['input']>;
   /** does the column NOT match the given case-insensitive pattern */
-  _nilike?: InputMaybe<Scalars['String']>;
-  _nin?: InputMaybe<Array<Scalars['String']>>;
+  _nilike?: InputMaybe<Scalars['String']['input']>;
+  _nin?: InputMaybe<Array<Scalars['String']['input']>>;
   /** does the column NOT match the given POSIX regular expression, case insensitive */
-  _niregex?: InputMaybe<Scalars['String']>;
+  _niregex?: InputMaybe<Scalars['String']['input']>;
   /** does the column NOT match the given pattern */
-  _nlike?: InputMaybe<Scalars['String']>;
+  _nlike?: InputMaybe<Scalars['String']['input']>;
   /** does the column NOT match the given POSIX regular expression, case sensitive */
-  _nregex?: InputMaybe<Scalars['String']>;
+  _nregex?: InputMaybe<Scalars['String']['input']>;
   /** does the column NOT match the given SQL regular expression */
-  _nsimilar?: InputMaybe<Scalars['String']>;
+  _nsimilar?: InputMaybe<Scalars['String']['input']>;
   /** does the column match the given POSIX regular expression, case sensitive */
-  _regex?: InputMaybe<Scalars['String']>;
+  _regex?: InputMaybe<Scalars['String']['input']>;
   /** does the column match the given SQL regular expression */
-  _similar?: InputMaybe<Scalars['String']>;
+  _similar?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** ordering argument of a cursor */
@@ -69,23 +73,83 @@ export enum Cursor_Ordering {
   Desc = 'DESC'
 }
 
+export type Geography_Cast_Exp = {
+  geometry?: InputMaybe<Geometry_Comparison_Exp>;
+};
+
+/** Boolean expression to compare columns of type "geography". All fields are combined with logical 'AND'. */
+export type Geography_Comparison_Exp = {
+  _cast?: InputMaybe<Geography_Cast_Exp>;
+  _eq?: InputMaybe<Scalars['geography']['input']>;
+  _gt?: InputMaybe<Scalars['geography']['input']>;
+  _gte?: InputMaybe<Scalars['geography']['input']>;
+  _in?: InputMaybe<Array<Scalars['geography']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['geography']['input']>;
+  _lte?: InputMaybe<Scalars['geography']['input']>;
+  _neq?: InputMaybe<Scalars['geography']['input']>;
+  _nin?: InputMaybe<Array<Scalars['geography']['input']>>;
+  /** is the column within a given distance from the given geography value */
+  _st_d_within?: InputMaybe<St_D_Within_Geography_Input>;
+  /** does the column spatially intersect the given geography value */
+  _st_intersects?: InputMaybe<Scalars['geography']['input']>;
+};
+
+export type Geometry_Cast_Exp = {
+  geography?: InputMaybe<Geography_Comparison_Exp>;
+};
+
+/** Boolean expression to compare columns of type "geometry". All fields are combined with logical 'AND'. */
+export type Geometry_Comparison_Exp = {
+  _cast?: InputMaybe<Geometry_Cast_Exp>;
+  _eq?: InputMaybe<Scalars['geometry']['input']>;
+  _gt?: InputMaybe<Scalars['geometry']['input']>;
+  _gte?: InputMaybe<Scalars['geometry']['input']>;
+  _in?: InputMaybe<Array<Scalars['geometry']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['geometry']['input']>;
+  _lte?: InputMaybe<Scalars['geometry']['input']>;
+  _neq?: InputMaybe<Scalars['geometry']['input']>;
+  _nin?: InputMaybe<Array<Scalars['geometry']['input']>>;
+  /** is the column within a given 3D distance from the given geometry value */
+  _st_3d_d_within?: InputMaybe<St_D_Within_Input>;
+  /** does the column spatially intersect the given geometry value in 3D */
+  _st_3d_intersects?: InputMaybe<Scalars['geometry']['input']>;
+  /** does the column contain the given geometry value */
+  _st_contains?: InputMaybe<Scalars['geometry']['input']>;
+  /** does the column cross the given geometry value */
+  _st_crosses?: InputMaybe<Scalars['geometry']['input']>;
+  /** is the column within a given distance from the given geometry value */
+  _st_d_within?: InputMaybe<St_D_Within_Input>;
+  /** is the column equal to given geometry value (directionality is ignored) */
+  _st_equals?: InputMaybe<Scalars['geometry']['input']>;
+  /** does the column spatially intersect the given geometry value */
+  _st_intersects?: InputMaybe<Scalars['geometry']['input']>;
+  /** does the column 'spatially overlap' (intersect but not completely contain) the given geometry value */
+  _st_overlaps?: InputMaybe<Scalars['geometry']['input']>;
+  /** does the column have atleast one point in common with the given geometry value */
+  _st_touches?: InputMaybe<Scalars['geometry']['input']>;
+  /** is the column contained in the given geometry value */
+  _st_within?: InputMaybe<Scalars['geometry']['input']>;
+};
+
 /** columns and relationships of "journey" */
 export type Journey = {
   __typename?: 'journey';
-  id: Scalars['String'];
+  id: Scalars['String']['output'];
   /** An array relationship */
   journey_locations: Array<Journey_Location>;
   /** An aggregate relationship */
   journey_locations_aggregate: Journey_Location_Aggregate;
-  name: Scalars['String'];
+  name: Scalars['String']['output'];
 };
 
 
 /** columns and relationships of "journey" */
 export type JourneyJourney_LocationsArgs = {
   distinct_on?: InputMaybe<Array<Journey_Location_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Journey_Location_Order_By>>;
   where?: InputMaybe<Journey_Location_Bool_Exp>;
 };
@@ -94,8 +158,8 @@ export type JourneyJourney_LocationsArgs = {
 /** columns and relationships of "journey" */
 export type JourneyJourney_Locations_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Journey_Location_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Journey_Location_Order_By>>;
   where?: InputMaybe<Journey_Location_Bool_Exp>;
 };
@@ -110,7 +174,7 @@ export type Journey_Aggregate = {
 /** aggregate fields of "journey" */
 export type Journey_Aggregate_Fields = {
   __typename?: 'journey_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Journey_Max_Fields>;
   min?: Maybe<Journey_Min_Fields>;
 };
@@ -119,7 +183,7 @@ export type Journey_Aggregate_Fields = {
 /** aggregate fields of "journey" */
 export type Journey_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Journey_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "journey". All fields are combined with a logical 'AND'. */
@@ -141,18 +205,20 @@ export enum Journey_Constraint {
 
 /** input type for inserting data into table "journey" */
 export type Journey_Insert_Input = {
-  id?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']['input']>;
   journey_locations?: InputMaybe<Journey_Location_Arr_Rel_Insert_Input>;
-  name?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** columns and relationships of "journey_location" */
 export type Journey_Location = {
   __typename?: 'journey_location';
-  id: Scalars['Int'];
-  journey_id: Scalars['String'];
-  location: Scalars['String'];
-  timestamp: Scalars['timestamptz'];
+  id: Scalars['Int']['output'];
+  journey_id: Scalars['String']['output'];
+  location: Scalars['String']['output'];
+  /** maybe in future */
+  location_gis?: Maybe<Scalars['geography']['output']>;
+  timestamp: Scalars['timestamptz']['output'];
 };
 
 /** aggregated selection of "journey_location" */
@@ -168,7 +234,7 @@ export type Journey_Location_Aggregate_Bool_Exp = {
 
 export type Journey_Location_Aggregate_Bool_Exp_Count = {
   arguments?: InputMaybe<Array<Journey_Location_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<Journey_Location_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
@@ -177,7 +243,7 @@ export type Journey_Location_Aggregate_Bool_Exp_Count = {
 export type Journey_Location_Aggregate_Fields = {
   __typename?: 'journey_location_aggregate_fields';
   avg?: Maybe<Journey_Location_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Journey_Location_Max_Fields>;
   min?: Maybe<Journey_Location_Min_Fields>;
   stddev?: Maybe<Journey_Location_Stddev_Fields>;
@@ -193,7 +259,7 @@ export type Journey_Location_Aggregate_Fields = {
 /** aggregate fields of "journey_location" */
 export type Journey_Location_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Journey_Location_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "journey_location" */
@@ -221,7 +287,7 @@ export type Journey_Location_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Journey_Location_Avg_Fields = {
   __typename?: 'journey_location_avg_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "journey_location" */
@@ -237,6 +303,7 @@ export type Journey_Location_Bool_Exp = {
   id?: InputMaybe<Int_Comparison_Exp>;
   journey_id?: InputMaybe<String_Comparison_Exp>;
   location?: InputMaybe<String_Comparison_Exp>;
+  location_gis?: InputMaybe<Geography_Comparison_Exp>;
   timestamp?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -248,24 +315,26 @@ export enum Journey_Location_Constraint {
 
 /** input type for incrementing numeric columns in table "journey_location" */
 export type Journey_Location_Inc_Input = {
-  id?: InputMaybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "journey_location" */
 export type Journey_Location_Insert_Input = {
-  id?: InputMaybe<Scalars['Int']>;
-  journey_id?: InputMaybe<Scalars['String']>;
-  location?: InputMaybe<Scalars['String']>;
-  timestamp?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  journey_id?: InputMaybe<Scalars['String']['input']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  /** maybe in future */
+  location_gis?: InputMaybe<Scalars['geography']['input']>;
+  timestamp?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type Journey_Location_Max_Fields = {
   __typename?: 'journey_location_max_fields';
-  id?: Maybe<Scalars['Int']>;
-  journey_id?: Maybe<Scalars['String']>;
-  location?: Maybe<Scalars['String']>;
-  timestamp?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  journey_id?: Maybe<Scalars['String']['output']>;
+  location?: Maybe<Scalars['String']['output']>;
+  timestamp?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by max() on columns of table "journey_location" */
@@ -279,10 +348,10 @@ export type Journey_Location_Max_Order_By = {
 /** aggregate min on columns */
 export type Journey_Location_Min_Fields = {
   __typename?: 'journey_location_min_fields';
-  id?: Maybe<Scalars['Int']>;
-  journey_id?: Maybe<Scalars['String']>;
-  location?: Maybe<Scalars['String']>;
-  timestamp?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  journey_id?: Maybe<Scalars['String']['output']>;
+  location?: Maybe<Scalars['String']['output']>;
+  timestamp?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by min() on columns of table "journey_location" */
@@ -297,7 +366,7 @@ export type Journey_Location_Min_Order_By = {
 export type Journey_Location_Mutation_Response = {
   __typename?: 'journey_location_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Journey_Location>;
 };
@@ -314,12 +383,13 @@ export type Journey_Location_Order_By = {
   id?: InputMaybe<Order_By>;
   journey_id?: InputMaybe<Order_By>;
   location?: InputMaybe<Order_By>;
+  location_gis?: InputMaybe<Order_By>;
   timestamp?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: journey_location */
 export type Journey_Location_Pk_Columns_Input = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** select columns of table "journey_location" */
@@ -331,21 +401,25 @@ export enum Journey_Location_Select_Column {
   /** column name */
   Location = 'location',
   /** column name */
+  LocationGis = 'location_gis',
+  /** column name */
   Timestamp = 'timestamp'
 }
 
 /** input type for updating data in table "journey_location" */
 export type Journey_Location_Set_Input = {
-  id?: InputMaybe<Scalars['Int']>;
-  journey_id?: InputMaybe<Scalars['String']>;
-  location?: InputMaybe<Scalars['String']>;
-  timestamp?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  journey_id?: InputMaybe<Scalars['String']['input']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  /** maybe in future */
+  location_gis?: InputMaybe<Scalars['geography']['input']>;
+  timestamp?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Journey_Location_Stddev_Fields = {
   __typename?: 'journey_location_stddev_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "journey_location" */
@@ -356,7 +430,7 @@ export type Journey_Location_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type Journey_Location_Stddev_Pop_Fields = {
   __typename?: 'journey_location_stddev_pop_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "journey_location" */
@@ -367,7 +441,7 @@ export type Journey_Location_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type Journey_Location_Stddev_Samp_Fields = {
   __typename?: 'journey_location_stddev_samp_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "journey_location" */
@@ -385,16 +459,18 @@ export type Journey_Location_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Journey_Location_Stream_Cursor_Value_Input = {
-  id?: InputMaybe<Scalars['Int']>;
-  journey_id?: InputMaybe<Scalars['String']>;
-  location?: InputMaybe<Scalars['String']>;
-  timestamp?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  journey_id?: InputMaybe<Scalars['String']['input']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  /** maybe in future */
+  location_gis?: InputMaybe<Scalars['geography']['input']>;
+  timestamp?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Journey_Location_Sum_Fields = {
   __typename?: 'journey_location_sum_fields';
-  id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "journey_location" */
@@ -411,6 +487,8 @@ export enum Journey_Location_Update_Column {
   /** column name */
   Location = 'location',
   /** column name */
+  LocationGis = 'location_gis',
+  /** column name */
   Timestamp = 'timestamp'
 }
 
@@ -426,7 +504,7 @@ export type Journey_Location_Updates = {
 /** aggregate var_pop on columns */
 export type Journey_Location_Var_Pop_Fields = {
   __typename?: 'journey_location_var_pop_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "journey_location" */
@@ -437,7 +515,7 @@ export type Journey_Location_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type Journey_Location_Var_Samp_Fields = {
   __typename?: 'journey_location_var_samp_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "journey_location" */
@@ -448,7 +526,7 @@ export type Journey_Location_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type Journey_Location_Variance_Fields = {
   __typename?: 'journey_location_variance_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "journey_location" */
@@ -459,22 +537,22 @@ export type Journey_Location_Variance_Order_By = {
 /** aggregate max on columns */
 export type Journey_Max_Fields = {
   __typename?: 'journey_max_fields';
-  id?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type Journey_Min_Fields = {
   __typename?: 'journey_min_fields';
-  id?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "journey" */
 export type Journey_Mutation_Response = {
   __typename?: 'journey_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Journey>;
 };
@@ -495,7 +573,7 @@ export type Journey_Order_By = {
 
 /** primary key columns input for table: journey */
 export type Journey_Pk_Columns_Input = {
-  id: Scalars['String'];
+  id: Scalars['String']['input'];
 };
 
 /** select columns of table "journey" */
@@ -508,8 +586,8 @@ export enum Journey_Select_Column {
 
 /** input type for updating data in table "journey" */
 export type Journey_Set_Input = {
-  id?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "journey" */
@@ -522,8 +600,8 @@ export type Journey_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Journey_Stream_Cursor_Value_Input = {
-  id?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "journey" */
@@ -583,7 +661,7 @@ export type Mutation_RootDelete_JourneyArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Journey_By_PkArgs = {
-  id: Scalars['String'];
+  id: Scalars['String']['input'];
 };
 
 
@@ -595,7 +673,7 @@ export type Mutation_RootDelete_Journey_LocationArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Journey_Location_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 
@@ -703,8 +781,8 @@ export type Query_Root = {
 
 export type Query_RootJourneyArgs = {
   distinct_on?: InputMaybe<Array<Journey_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Journey_Order_By>>;
   where?: InputMaybe<Journey_Bool_Exp>;
 };
@@ -712,22 +790,22 @@ export type Query_RootJourneyArgs = {
 
 export type Query_RootJourney_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Journey_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Journey_Order_By>>;
   where?: InputMaybe<Journey_Bool_Exp>;
 };
 
 
 export type Query_RootJourney_By_PkArgs = {
-  id: Scalars['String'];
+  id: Scalars['String']['input'];
 };
 
 
 export type Query_RootJourney_LocationArgs = {
   distinct_on?: InputMaybe<Array<Journey_Location_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Journey_Location_Order_By>>;
   where?: InputMaybe<Journey_Location_Bool_Exp>;
 };
@@ -735,15 +813,26 @@ export type Query_RootJourney_LocationArgs = {
 
 export type Query_RootJourney_Location_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Journey_Location_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Journey_Location_Order_By>>;
   where?: InputMaybe<Journey_Location_Bool_Exp>;
 };
 
 
 export type Query_RootJourney_Location_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
+};
+
+export type St_D_Within_Geography_Input = {
+  distance: Scalars['Float']['input'];
+  from: Scalars['geography']['input'];
+  use_spheroid?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type St_D_Within_Input = {
+  distance: Scalars['Float']['input'];
+  from: Scalars['geometry']['input'];
 };
 
 export type Subscription_Root = {
@@ -769,8 +858,8 @@ export type Subscription_Root = {
 
 export type Subscription_RootJourneyArgs = {
   distinct_on?: InputMaybe<Array<Journey_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Journey_Order_By>>;
   where?: InputMaybe<Journey_Bool_Exp>;
 };
@@ -778,22 +867,22 @@ export type Subscription_RootJourneyArgs = {
 
 export type Subscription_RootJourney_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Journey_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Journey_Order_By>>;
   where?: InputMaybe<Journey_Bool_Exp>;
 };
 
 
 export type Subscription_RootJourney_By_PkArgs = {
-  id: Scalars['String'];
+  id: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootJourney_LocationArgs = {
   distinct_on?: InputMaybe<Array<Journey_Location_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Journey_Location_Order_By>>;
   where?: InputMaybe<Journey_Location_Bool_Exp>;
 };
@@ -801,42 +890,42 @@ export type Subscription_RootJourney_LocationArgs = {
 
 export type Subscription_RootJourney_Location_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Journey_Location_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Journey_Location_Order_By>>;
   where?: InputMaybe<Journey_Location_Bool_Exp>;
 };
 
 
 export type Subscription_RootJourney_Location_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 
 export type Subscription_RootJourney_Location_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Journey_Location_Stream_Cursor_Input>>;
   where?: InputMaybe<Journey_Location_Bool_Exp>;
 };
 
 
 export type Subscription_RootJourney_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Journey_Stream_Cursor_Input>>;
   where?: InputMaybe<Journey_Bool_Exp>;
 };
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['timestamptz']>;
-  _gt?: InputMaybe<Scalars['timestamptz']>;
-  _gte?: InputMaybe<Scalars['timestamptz']>;
-  _in?: InputMaybe<Array<Scalars['timestamptz']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['timestamptz']>;
-  _lte?: InputMaybe<Scalars['timestamptz']>;
-  _neq?: InputMaybe<Scalars['timestamptz']>;
-  _nin?: InputMaybe<Array<Scalars['timestamptz']>>;
+  _eq?: InputMaybe<Scalars['timestamptz']['input']>;
+  _gt?: InputMaybe<Scalars['timestamptz']['input']>;
+  _gte?: InputMaybe<Scalars['timestamptz']['input']>;
+  _in?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['timestamptz']['input']>;
+  _lte?: InputMaybe<Scalars['timestamptz']['input']>;
+  _neq?: InputMaybe<Scalars['timestamptz']['input']>;
+  _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
 export type InsertLocationMutationVariables = Exact<{
@@ -846,5 +935,11 @@ export type InsertLocationMutationVariables = Exact<{
 
 export type InsertLocationMutation = { __typename?: 'mutation_root', insert_journey_location?: { __typename?: 'journey_location_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'journey_location', id: number, journey_id: string, location: string, timestamp: any }> } | null };
 
+export type LocationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LocationsQuery = { __typename?: 'query_root', journey_location: Array<{ __typename?: 'journey_location', id: number, location: string }> };
+
 
 export const InsertLocationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertLocation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"l"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"journey_location_insert_input"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_journey_location"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"objects"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"l"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"affected_rows"}},{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"journey_id"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"timestamp"}}]}}]}}]}}]} as unknown as DocumentNode<InsertLocationMutation, InsertLocationMutationVariables>;
+export const LocationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Locations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"journey_location"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"EnumValue","value":"desc"}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"2000"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"location"}}]}}]}}]} as unknown as DocumentNode<LocationsQuery, LocationsQueryVariables>;
