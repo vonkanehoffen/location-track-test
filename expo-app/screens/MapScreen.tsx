@@ -11,35 +11,41 @@ import {
 } from "../services/location";
 import { RoundButton } from "../components/RoundButton";
 import { InfoHeader } from "../components/InfoHeader";
+// import { useGetTrackPoints } from "../services/location/db";
 
 type MapScreenProps = NativeStackScreenProps<StackParamList, "Map">;
 
-export function MapScreen({ navigation }: MapScreenProps) {
-  const locations = useLocationData();
-  const tracking = useLocationTracking();
-  const distance = useLocationDistance(locations);
+export function MapScreen({ route, navigation }: MapScreenProps) {
+  const { journeyId } = route.params;
 
-  const emission = (distance * 0.192).toFixed(2);
+  const trackPoints = useLocationData(journeyId);
+  const tracking = useLocationTracking(journeyId);
+  // const distance = useLocationDistance(locations);
+  // const trackPoints = useGetTrackPoints(journeyId);
 
-  const coords = locations.map((location) => ({
-    latitude: location.coords.latitude,
-    longitude: location.coords.longitude,
+  // const emission = (distance * 0.192).toFixed(2);
+  const emission = 0;
+  const distance = 0;
+
+  const polyline = trackPoints.map((location) => ({
+    latitude: location.latitude,
+    longitude: location.longitude,
   }));
 
   return (
     <View style={styles.container}>
-      {locations?.length ? (
+      {trackPoints?.length ? (
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           region={{
-            latitude: locations[locations.length - 1].coords.latitude,
-            longitude: locations[locations.length - 1].coords.longitude,
+            latitude: trackPoints[trackPoints.length - 1].latitude,
+            longitude: trackPoints[trackPoints.length - 1].longitude,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}
         >
-          <Polyline coordinates={coords} strokeColor="#000" strokeWidth={6} />
+          <Polyline coordinates={polyline} strokeColor="#000" strokeWidth={6} />
         </MapView>
       ) : null}
       <InfoHeader textA={`${distance}m`} textB={`${emission}g CO2e`} />
@@ -57,8 +63,8 @@ export function MapScreen({ navigation }: MapScreenProps) {
         />
       )}
       <RoundButton
-        onPress={tracking.clearTracking}
-        icon="refresh"
+        onPress={() => navigation.navigate("JourneyInit")}
+        icon="chevron-left"
         style={styles.btnReset}
       />
     </View>

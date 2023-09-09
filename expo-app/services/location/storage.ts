@@ -7,6 +7,11 @@ import { LocationObject } from "expo-location";
 export const locationStorageName = "locations";
 
 /**
+ * The unique key of the journey id.
+ */
+export const journeyIdStorageName = "journeyId";
+
+/**
  * Get all stored locations from storage.
  * This is a wrapper around AsyncStorage to parse stored JSON.
  */
@@ -21,6 +26,21 @@ export async function getLocations(): Promise<LocationObject[]> {
  */
 export async function setLocations(locations: LocationObject[]): Promise<void> {
   await AsyncStorage.setItem(locationStorageName, JSON.stringify(locations));
+}
+
+/**
+ * Set journey ID in storage.
+ */
+export async function setJourneyId(journeyId: string) {
+  await AsyncStorage.setItem(journeyIdStorageName, journeyId);
+}
+
+/**
+ *
+ * @param location Get journey ID from storage.
+ */
+export async function getJourneyId() {
+  return await AsyncStorage.getItem(journeyIdStorageName);
 }
 
 /**

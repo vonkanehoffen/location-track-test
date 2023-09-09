@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import * as Storage from "./storage";
 import * as Track from "./track";
+import { getTrackPoints } from "./db";
 
 const geodist = require("geodist");
 
@@ -39,13 +40,13 @@ function getDistanceFromLocations(locations: LocationObject[]) {
  * An easy-to-use hook that combines all required functionality.
  * It keeps the data in sync as much as possible.
  */
-export function useLocationTracking() {
+export function useLocationTracking(journeyId: string) {
   const [isTracking, setIsTracking] = useState<boolean>();
 
   const onStartTracking = useCallback(async () => {
-    await Track.startTracking();
+    await Track.startTracking(journeyId);
     setIsTracking(true);
-  }, []);
+  }, [journeyId]);
 
   const onStopTracking = useCallback(async () => {
     await Track.stopTracking();
@@ -74,7 +75,7 @@ export function useLocationTracking() {
 /**
  * A hook to poll for changes in the storage, updates the UI if locations were added.
  */
-export function useLocationData(interval = 3000) {
+export function useLocationData(journeyId: string, interval = 3000) {
   const locations = useRef<LocationObject[]>([]);
   const [count, setCount] = useState(0); // count state is only used as rerender trigger, from timer callback
 
@@ -94,10 +95,10 @@ export function useLocationData(interval = 3000) {
 
   useEffect(() => {
     // load the locations on first render
-    Storage.getLocations().then(onLocations);
+    getTrackPoints(journeyId).then(onLocations);
     // create a timer to poll for changes
     const timerId = window.setInterval(
-      () => Storage.getLocations().then(onLocations),
+      () => getTrackPoints(journeyId).then(onLocations),
       interval
     );
     // when the hook is unmounted, remove the timer

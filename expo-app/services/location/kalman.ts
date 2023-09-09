@@ -15,6 +15,26 @@ type Location = {
   validation: string;
 };
 
+/**
+ * TODO: Chnange to whats coming back from expo:
+ * 
+ * [
+  {
+    "coords": {
+      "accuracy": 10,
+      "altitude": 0,
+      "altitudeAccuracy": -1,
+      "heading": 88.83,
+      "latitude": 37.33025232,
+      "longitude": -122.02753387,
+      "speed": 4.14
+    },
+    "timestamp": 1694031896558.717
+  }
+]
+
+ */
+
 export const kalman = (
   location: Location,
   lastLocation: Location,
