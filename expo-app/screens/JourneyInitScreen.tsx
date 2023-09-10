@@ -2,7 +2,11 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { StackParamList } from "../providers/NavigationProvider";
 import { FlatList } from "react-native";
-import { JourneySummary, useGetJourneys } from "../services/location/db";
+import {
+  JourneySummary,
+  dropLocationsTable,
+  useGetJourneys,
+} from "../services/location/db";
 import { Box, Button, Title } from "../providers/theme";
 
 type JourneyInit = NativeStackScreenProps<StackParamList, "JourneyInit">;
@@ -12,6 +16,9 @@ export function JourneyInitScreen({ navigation }: JourneyInit) {
   const handleNew = () => {
     const dateTime = new Date().toISOString().slice(0, 16);
     navigation.navigate("Map", { journeyId: dateTime });
+  };
+  const handleDropTable = () => {
+    dropLocationsTable();
   };
 
   return (
@@ -31,6 +38,7 @@ export function JourneyInitScreen({ navigation }: JourneyInit) {
           </Box>
         )}
       />
+      {/* <Button onPress={handleDropTable}>Drop Table</Button> */}
       <Button onPress={handleNew}>New Journey</Button>
     </Box>
   );

@@ -2,6 +2,7 @@ import * as SQLite from "expo-sqlite";
 import * as Location from "expo-location";
 import { Platform } from "react-native";
 import { useEffect, useState } from "react";
+import { KalmanLocation } from "./kalman";
 
 function openDatabase() {
   if (Platform.OS === "web") {
@@ -25,72 +26,85 @@ export function setupDb() {
     db.transaction((tx) => {
       tx.executeSql(
         `CREATE TABLE IF NOT EXISTS locations (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        journeyId TEXT, 
-        timestamp INTEGER, 
+          id INTEGER PRIMARY KEY AUTOINCREMENT, 
+          journeyId TEXT, 
 
-        accuracy REAL,
-        altitude REAL,
-        altitudeAccuracy REAL,
-        heading REAL,
-        latitude REAL,
-        longitude REAL,
-        speed REAL
-      );`
+          timestamp INTEGER,
+          latitude REAL,
+          longitude REAL,
+          accuracy REAL,
+          variance REAL
+        );`
       );
     });
   }, []);
 }
 
+// Drop locations table promise
+export function dropLocationsTable() {
+  return new Promise<void>((resolve) => {
+    db.transaction((tx) => {
+      tx.executeSql(`DROP TABLE IF EXISTS locations;`, [], () => {
+        resolve();
+      });
+    });
+  });
+}
+
 export function addJourneyLocation(
   journeyId: string,
-  location: Location.LocationObject
+  location: KalmanLocation
 ) {
   db.transaction((tx) => {
     tx.executeSql(
       `INSERT INTO locations (
-        journeyId, 
-        timestamp, 
-        accuracy,
-        altitude,
-        altitudeAccuracy,
-        heading,
+
+        journeyId,
+        timestamp,
         latitude,
         longitude,
-        speed
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+        accuracy,
+        variance
+
+      ) VALUES (?, ?, ?, ?, ?, ?);`,
       [
         journeyId,
         location.timestamp,
-        location.coords.accuracy,
-        location.coords.altitude,
-        location.coords.altitudeAccuracy,
-        location.coords.heading,
-        location.coords.latitude,
-        location.coords.longitude,
-        location.coords.speed,
+        location.latitude,
+        location.longitude,
+        location.accuracy,
+        location.variance,
       ]
     );
   });
 }
 
 export function getJourneyLocations(journeyId: string) {
-  return new Promise<Location.LocationObject[]>((resolve, reject) => {
+  return new Promise<KalmanLocation[]>((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
         `SELECT * FROM locations WHERE journeyId = ? ORDER BY timestamp ASC;`,
         [journeyId],
         (_, { rows }) => {
-          resolve(
-            rows._array.map(({ timestamp, ...rest }) => ({
-              timestamp: timestamp,
-              coords: rest,
-            }))
-          );
+          resolve(rows._array);
         },
         (_, error) => {
           reject(error);
           return true; // See https://stackoverflow.com/a/67437415/398287
+        }
+      );
+    });
+  });
+}
+
+export function getLastJourneyLocation(journeyId: string) {
+  return new Promise<KalmanLocation | undefined>((resolve) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `SELECT * FROM locations WHERE journeyId = ? ORDER BY timestamp DESC LIMIT 1;`,
+        [journeyId],
+        (_, { rows }) => {
+          resolve(rows._array[0]);
         }
       );
     });

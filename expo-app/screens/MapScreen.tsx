@@ -20,11 +20,13 @@ export function MapScreen({ route, navigation }: MapScreenProps) {
   const tracking = useLocationTracking(journeyId);
   const distance = useLocationDistance(locations);
 
+  // console.log("LOC DATA", locations);
+
   const emission = (distance * 0.192).toFixed(2);
 
   const polyline = locations.map((location) => ({
-    latitude: location.coords.latitude,
-    longitude: location.coords.longitude,
+    latitude: location.latitude,
+    longitude: location.longitude,
   }));
 
   return (
@@ -34,8 +36,8 @@ export function MapScreen({ route, navigation }: MapScreenProps) {
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           region={{
-            latitude: locations[locations.length - 1].coords.latitude,
-            longitude: locations[locations.length - 1].coords.longitude,
+            latitude: locations[locations.length - 1].latitude,
+            longitude: locations[locations.length - 1].longitude,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}

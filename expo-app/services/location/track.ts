@@ -3,7 +3,8 @@ import * as Location from "expo-location";
 
 import { getJourneyId, setJourneyId } from "./storage";
 import { sendLocation } from "./server-state";
-import { addJourneyLocation } from "./db";
+import { addJourneyLocation, getLastJourneyLocation } from "./db";
+import { KalmanLocation, kalman } from "./kalman";
 
 /**
  * The unique name of the background location task.
@@ -66,13 +67,29 @@ TaskManager.defineTask(locationTaskName, async (event) => {
   console.log("[tracking]", "Received new locations", locations);
 
   try {
-    // const lastStoredLocation = (await getLocations()).slice(-1)[0];
     // have to add it sequentially, parses/serializes existing JSON
 
     // is array always in sequence? out of sequence could explain weird jumps
     const journeyId = await getJourneyId();
+
     if (journeyId) {
-      for (const location of locations) {
+      let lastLocation = await getLastJourneyLocation(journeyId);
+
+      const kalmanLocations = locations.map((location) => {
+        const loc: KalmanLocation = {
+          timestamp: location.timestamp,
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          accuracy: location.coords.accuracy || 1,
+          variance: 0,
+        };
+        // first rec = 500
+        // 2nd rec = 2000
+        // 3rd rec = 100
+        lastLocation = kalman(loc, lastLocation, 500);
+        return lastLocation;
+      });
+      for (const location of kalmanLocations) {
         // TODO: SignalR for server state?
         // await sendLocation(location);
         addJourneyLocation(journeyId, location);

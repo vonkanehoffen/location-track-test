@@ -1,24 +1,24 @@
-import { LocationObject } from "expo-location";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import * as Storage from "./storage";
 import * as Track from "./track";
 import { getJourneyLocations } from "./db";
+import { KalmanLocation } from "./kalman";
 
 const geodist = require("geodist");
 
 /**
  * Calculate the rough distance (in meters) between multiple coordinates.
  */
-function getDistanceFromLocations(locations: LocationObject[]) {
+function getDistanceFromLocations(locations: KalmanLocation[]) {
   if (locations.length < 2) {
     return 0;
   }
 
   return locations
     .map((location) => ({
-      lat: location.coords.latitude,
-      lon: location.coords.longitude,
+      lat: location.latitude,
+      lon: location.longitude,
     }))
     .reduce((distance, location, index, all) => {
       // skip the first index, we are comparing "current" vs the previous location
@@ -76,11 +76,11 @@ export function useLocationTracking(journeyId: string) {
  * A hook to poll for changes in the storage, updates the UI if locations were added.
  */
 export function useLocationData(journeyId: string, interval = 3000) {
-  const locations = useRef<LocationObject[]>([]);
+  const locations = useRef<KalmanLocation[]>([]);
   const [count, setCount] = useState(0); // count state is only used as rerender trigger, from timer callback
 
   const onLocations = useCallback(
-    (stored: LocationObject[]) => {
+    (stored: KalmanLocation[]) => {
       // check if data was changed using ref data.
       // this method is called from outside react, so we can't use state data without reinitializing it
       if (stored.length !== locations.current.length) {
@@ -112,7 +112,7 @@ export function useLocationData(journeyId: string, interval = 3000) {
  * A hook to calculate the distance, in meters, between the registered locations.
  */
 export function useLocationDistance(
-  locations: LocationObject[],
+  locations: KalmanLocation[],
   precision = 2
 ) {
   // Let's memoize this method to avoid costly calculations
