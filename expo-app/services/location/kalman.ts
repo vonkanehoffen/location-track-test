@@ -1,45 +1,7 @@
-import _ from "lodash";
+import _ from "lodash"; // 4.17.5
 import { _calculateGreatCircleDistance } from "./locationHelpers";
 
-// See https://snack.expo.dev/@arrygoo/locations-blogpost
-
-type Location = {
-  timestamp: Date;
-  latitude: number;
-  longitude: number;
-  accuracy: number;
-  altitude: number;
-  heading: number;
-  speed: number;
-  accuracyDifference: number;
-  validation: string;
-};
-
-/**
- * TODO: Chnange to whats coming back from expo:
- * 
- * [
-  {
-    "coords": {
-      "accuracy": 10,
-      "altitude": 0,
-      "altitudeAccuracy": -1,
-      "heading": 88.83,
-      "latitude": 37.33025232,
-      "longitude": -122.02753387,
-      "speed": 4.14
-    },
-    "timestamp": 1694031896558.717
-  }
-]
-
- */
-
-export const kalman = (
-  location: Location,
-  lastLocation: Location,
-  constant: number
-) => {
+const kalman = (location, lastLocation, constant) => {
   const accuracy = Math.max(location.accuracy, 1);
   const result = { ...location, ...lastLocation };
 
@@ -69,9 +31,8 @@ export const kalman = (
   };
 };
 
-// This was just for demo on already collected data?
 let lastLocation;
-export const runKalmanOnLocations = (rawData, kalmanConstant) =>
+const runKalmanOnLocations = (rawData, kalmanConstant) =>
   rawData
     .map((location) => ({
       ...location,
@@ -81,3 +42,5 @@ export const runKalmanOnLocations = (rawData, kalmanConstant) =>
       lastLocation = kalman(location, lastLocation, kalmanConstant);
       return lastLocation;
     });
+
+export default runKalmanOnLocations;

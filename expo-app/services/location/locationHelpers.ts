@@ -1,8 +1,6 @@
-// See https://snack.expo.dev/@arrygoo/locations-blogpost
+const _toRadians = (number) => (number * Math.PI) / 180;
 
-export const _toRadians = (number) => (number * Math.PI) / 180;
-
-export const _calculateGreatCircleDistance = (locationA, locationZ) => {
+const _calculateGreatCircleDistance = (locationA, locationZ) => {
   const lat1 = locationA.latitude;
   const lon1 = locationA.longitude;
   const lat2 = locationZ.latitude;
@@ -21,3 +19,5 @@ export const _calculateGreatCircleDistance = (locationA, locationZ) => {
 
   return isNaN(d) ? 0 : d;
 };
+
+export { _toRadians, _calculateGreatCircleDistance };
