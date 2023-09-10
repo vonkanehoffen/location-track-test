@@ -28,8 +28,8 @@ export function MapScreen({ route, navigation }: MapScreenProps) {
   const distance = 0;
 
   const polyline = trackPoints.map((location) => ({
-    latitude: location.latitude,
-    longitude: location.longitude,
+    latitude: location.coords.latitude,
+    longitude: location.coords.longitude,
   }));
 
   return (
@@ -39,8 +39,8 @@ export function MapScreen({ route, navigation }: MapScreenProps) {
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           region={{
-            latitude: trackPoints[trackPoints.length - 1].latitude,
-            longitude: trackPoints[trackPoints.length - 1].longitude,
+            latitude: trackPoints[trackPoints.length - 1].coords.latitude,
+            longitude: trackPoints[trackPoints.length - 1].coords.longitude,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}

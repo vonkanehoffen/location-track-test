@@ -81,34 +81,21 @@ export function getTrackPoints(journeyId: string) {
         `SELECT * FROM locations WHERE journeyId = ? ORDER BY timestamp ASC;`,
         [journeyId],
         (_, { rows }) => {
-          console.log("getTrackPoints db", journeyId, rows._array);
-          resolve(rows._array);
+          resolve(
+            rows._array.map(({ timestamp, ...rest }) => ({
+              timestamp: timestamp,
+              coords: rest,
+            }))
+          );
         },
         (_, error) => {
           reject(error);
+          return true; // See https://stackoverflow.com/a/67437415/398287
         }
       );
     });
   });
 }
-
-// export function useGetTrackPoints(journeyId: string) {
-//   const [trackPoints, setTrackPoints] = useState<Location.LocationObject[]>([]);
-
-//   useEffect(() => {
-//     db.transaction((tx) => {
-//       tx.executeSql(
-//         `SELECT * FROM locations WHERE journeyId = ? ORDER BY timestamp ASC;`,
-//         [journeyId],
-//         (_, { rows }) => {
-//           setTrackPoints(rows._array);
-//         }
-//       );
-//     });
-//   }, [journeyId]);
-
-//   return trackPoints;
-// }
 
 export type JourneySummary = {
   journeyId: string;
