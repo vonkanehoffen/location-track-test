@@ -1,5 +1,4 @@
 import React from "react";
-import { Box, Button, Paragraph } from "../providers/theme";
 import { StyleSheet, View } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Polyline } from "react-native-maps";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -11,36 +10,32 @@ import {
 } from "../services/location";
 import { RoundButton } from "../components/RoundButton";
 import { InfoHeader } from "../components/InfoHeader";
-// import { useGetTrackPoints } from "../services/location/db";
 
 type MapScreenProps = NativeStackScreenProps<StackParamList, "Map">;
 
 export function MapScreen({ route, navigation }: MapScreenProps) {
   const { journeyId } = route.params;
 
-  const trackPoints = useLocationData(journeyId);
+  const locations = useLocationData(journeyId);
   const tracking = useLocationTracking(journeyId);
-  // const distance = useLocationDistance(locations);
-  // const trackPoints = useGetTrackPoints(journeyId);
+  const distance = useLocationDistance(locations);
 
-  // const emission = (distance * 0.192).toFixed(2);
-  const emission = 0;
-  const distance = 0;
+  const emission = (distance * 0.192).toFixed(2);
 
-  const polyline = trackPoints.map((location) => ({
+  const polyline = locations.map((location) => ({
     latitude: location.coords.latitude,
     longitude: location.coords.longitude,
   }));
 
   return (
     <View style={styles.container}>
-      {trackPoints?.length ? (
+      {locations?.length ? (
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           region={{
-            latitude: trackPoints[trackPoints.length - 1].coords.latitude,
-            longitude: trackPoints[trackPoints.length - 1].coords.longitude,
+            latitude: locations[locations.length - 1].coords.latitude,
+            longitude: locations[locations.length - 1].coords.longitude,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}
