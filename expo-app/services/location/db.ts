@@ -42,7 +42,7 @@ export function setupDb() {
   }, []);
 }
 
-export function addTrackPoint(
+export function addJourneyLocation(
   journeyId: string,
   location: Location.LocationObject
 ) {
@@ -74,7 +74,7 @@ export function addTrackPoint(
   });
 }
 
-export function getTrackPoints(journeyId: string) {
+export function getJourneyLocations(journeyId: string) {
   return new Promise<Location.LocationObject[]>((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(

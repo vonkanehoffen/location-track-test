@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import * as Storage from "./storage";
 import * as Track from "./track";
-import { getTrackPoints } from "./db";
+import { getJourneyLocations } from "./db";
 
 const geodist = require("geodist");
 
@@ -95,10 +95,10 @@ export function useLocationData(journeyId: string, interval = 3000) {
 
   useEffect(() => {
     // load the locations on first render
-    getTrackPoints(journeyId).then(onLocations);
+    getJourneyLocations(journeyId).then(onLocations);
     // create a timer to poll for changes
     const timerId = window.setInterval(
-      () => getTrackPoints(journeyId).then(onLocations),
+      () => getJourneyLocations(journeyId).then(onLocations),
       interval
     );
     // when the hook is unmounted, remove the timer

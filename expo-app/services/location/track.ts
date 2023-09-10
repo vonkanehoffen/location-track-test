@@ -1,14 +1,9 @@
 import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
 
-import {
-  addLocation,
-  getJourneyId,
-  getLocations,
-  setJourneyId,
-} from "./storage";
+import { getJourneyId, setJourneyId } from "./storage";
 import { sendLocation } from "./server-state";
-import { addTrackPoint } from "./db";
+import { addJourneyLocation } from "./db";
 
 /**
  * The unique name of the background location task.
@@ -78,9 +73,9 @@ TaskManager.defineTask(locationTaskName, async (event) => {
     const journeyId = await getJourneyId();
     if (journeyId) {
       for (const location of locations) {
-        // await addLocation(location);
+        // TODO: SignalR for server state?
         // await sendLocation(location);
-        addTrackPoint(journeyId, location);
+        addJourneyLocation(journeyId, location);
       }
     }
   } catch (error) {
