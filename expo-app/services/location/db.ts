@@ -4,6 +4,7 @@ import { Platform } from "react-native";
 import { useEffect, useState } from "react";
 import { KalmanLocation } from "./kalman";
 
+export const DB_NAME = "locations.db";
 function openDatabase() {
   if (Platform.OS === "web") {
     return {
@@ -15,7 +16,7 @@ function openDatabase() {
     };
   }
 
-  const db = SQLite.openDatabase("locations.db");
+  const db = SQLite.openDatabase(DB_NAME);
   return db;
 }
 

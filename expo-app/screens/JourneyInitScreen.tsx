@@ -1,8 +1,11 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system";
 import { StackParamList } from "../providers/NavigationProvider";
 import { FlatList } from "react-native";
 import {
+  DB_NAME,
   JourneySummary,
   dropLocationsTable,
   useGetJourneys,
@@ -19,6 +22,13 @@ export function JourneyInitScreen({ navigation }: JourneyInit) {
   };
   const handleDropTable = () => {
     dropLocationsTable();
+  };
+  const shareDb = () => {
+    Sharing.shareAsync(`${FileSystem.documentDirectory}/SQLite/${DB_NAME}`, {
+      dialogTitle: "Share or copy the DB via",
+    }).catch((error) => {
+      console.log(error);
+    });
   };
 
   return (
@@ -39,6 +49,7 @@ export function JourneyInitScreen({ navigation }: JourneyInit) {
         )}
       />
       {/* <Button onPress={handleDropTable}>Drop Table</Button> */}
+      <Button onPress={shareDb}>Share DB</Button>
       <Button onPress={handleNew}>New Journey</Button>
     </Box>
   );
