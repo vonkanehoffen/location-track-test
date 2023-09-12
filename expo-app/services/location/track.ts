@@ -92,6 +92,10 @@ TaskManager.defineTask(locationTaskName, async (event) => {
       for (const location of kalmanLocations) {
         // TODO: SignalR for server state?
         // await sendLocation(location);
+
+        // TODO: Store raw location data as well. Plot along with Kalman + some way to replay / save out?
+        // Also look at bg location lib maybe?
+
         addJourneyLocation(journeyId, location);
       }
     }
