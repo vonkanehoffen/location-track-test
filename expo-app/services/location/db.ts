@@ -118,20 +118,16 @@ export type JourneySummary = {
   end: number;
 };
 
-export function useGetJourneys() {
-  const [journeys, setJourneys] = useState<JourneySummary[]>([]);
-
-  useEffect(() => {
+export function getJourneyList() {
+  return new Promise<JourneySummary[]>((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
         `SELECT journeyId, MIN(timestamp) as start, MAX(timestamp) as end FROM locations GROUP BY journeyId;`,
         [],
         (_, { rows }) => {
-          setJourneys(rows._array);
+          resolve(rows._array);
         }
       );
     });
-  }, []);
-
-  return journeys;
+  });
 }

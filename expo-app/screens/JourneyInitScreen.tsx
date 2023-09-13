@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React from "react";
+import React, { useState, useCallback } from "react";
 import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
 import { StackParamList } from "../providers/NavigationProvider";
@@ -8,14 +8,22 @@ import {
   DB_NAME,
   JourneySummary,
   dropLocationsTable,
-  useGetJourneys,
+  getJourneyList,
 } from "../services/location/db";
 import { Box, Button, Title } from "../providers/theme";
+import { useFocusEffect } from "@react-navigation/native";
 
 type JourneyInit = NativeStackScreenProps<StackParamList, "JourneyInit">;
 
 export function JourneyInitScreen({ navigation }: JourneyInit) {
-  const journeys = useGetJourneys();
+  const [journeys, setJourneys] = useState<JourneySummary[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      getJourneyList().then((journeys) => setJourneys(journeys));
+    }, [])
+  );
+
   const handleNew = () => {
     const dateTime = new Date().toISOString().slice(0, 16);
     navigation.navigate("Map", { journeyId: dateTime });
