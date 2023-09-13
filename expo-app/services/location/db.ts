@@ -37,6 +37,21 @@ export function setupDb() {
           variance REAL
         );`
       );
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS raw_locations (
+          id INTEGER PRIMARY KEY AUTOINCREMENT, 
+          journeyId TEXT, 
+
+          timestamp INTEGER,
+          accuracy REAL,
+          altitude REAL,
+          altitudeAccuracy REAL,
+          heading REAL,
+          latitude REAL,
+          longitude REAL,
+          speed REAL
+        );`
+      );
     });
   }, []);
 }
@@ -77,6 +92,49 @@ export function addJourneyLocation(
         location.variance,
       ]
     );
+  });
+}
+
+export function addJourneyRawLocation(
+  journeyId: string,
+  location: Location.LocationObject
+) {
+  return new Promise<any>((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `INSERT INTO raw_locations (
+
+        journeyId, 
+
+        timestamp,
+        accuracy,
+        altitude,
+        altitudeAccuracy,
+        heading,
+        latitude,
+        longitude,
+        speed
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+        [
+          journeyId,
+          location.timestamp,
+          location.coords.accuracy,
+          location.coords.altitude,
+          location.coords.altitudeAccuracy,
+          location.coords.heading,
+          location.coords.latitude,
+          location.coords.longitude,
+          location.coords.speed,
+        ],
+        (_, { rows }) => {
+          resolve(rows._array);
+        },
+        (_, error) => {
+          reject(error);
+          return true;
+        }
+      );
+    });
   });
 }
 

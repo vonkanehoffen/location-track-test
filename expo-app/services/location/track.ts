@@ -2,8 +2,11 @@ import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
 
 import { getJourneyId, setJourneyId } from "./storage";
-import { sendLocation } from "./server-state";
-import { addJourneyLocation, getLastJourneyLocation } from "./db";
+import {
+  addJourneyLocation,
+  addJourneyRawLocation,
+  getLastJourneyLocation,
+} from "./db";
 import { KalmanLocation, kalman } from "./kalman";
 
 /**
@@ -67,14 +70,16 @@ TaskManager.defineTask(locationTaskName, async (event) => {
   console.log("[tracking]", "Received new locations", locations);
 
   try {
-    // have to add it sequentially, parses/serializes existing JSON
-
     // is array always in sequence? out of sequence could explain weird jumps
     const journeyId = await getJourneyId();
 
     if (journeyId) {
       let lastLocation = await getLastJourneyLocation(journeyId);
 
+      // Save raw location data for debug / testing
+      for (const location of locations) {
+        addJourneyRawLocation(journeyId, location);
+      }
       const kalmanLocations = locations.map((location) => {
         const loc: KalmanLocation = {
           timestamp: location.timestamp,
