@@ -1,6 +1,11 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Polyline } from "react-native-maps";
+import MapView, {
+  Circle,
+  Marker,
+  PROVIDER_GOOGLE,
+  Polyline,
+} from "react-native-maps";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../providers/NavigationProvider";
 import {
@@ -29,6 +34,7 @@ export function MapScreen({ route, navigation }: MapScreenProps) {
     longitude: location.longitude,
   }));
 
+  const currentLocation = locations[locations.length - 1];
   return (
     <View style={styles.container}>
       {locations?.length ? (
@@ -36,12 +42,19 @@ export function MapScreen({ route, navigation }: MapScreenProps) {
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           region={{
-            latitude: locations[locations.length - 1].latitude,
-            longitude: locations[locations.length - 1].longitude,
+            latitude: currentLocation.latitude,
+            longitude: currentLocation.longitude,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}
         >
+          <Marker coordinate={locations[0]} />
+          <Circle
+            center={currentLocation}
+            radius={currentLocation.accuracy}
+            strokeColor="rgba(0, 0, 255, 0.5)"
+            fillColor="rgba(0, 0, 255, 0.1)"
+          />
           <Polyline coordinates={polyline} strokeColor="#000" strokeWidth={6} />
         </MapView>
       ) : null}
