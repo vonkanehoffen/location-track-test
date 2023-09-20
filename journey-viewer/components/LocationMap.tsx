@@ -1,7 +1,8 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, Polyline, useJsApiLoader } from "@react-google-maps/api";
+import locations from "../test-data/norwich-1/locations-2023-09-17T13:00.json";
 
 const containerStyle = {
   width: "100vw",
@@ -9,8 +10,8 @@ const containerStyle = {
 };
 
 const center = {
-  lat: -3.745,
-  lng: -38.523,
+  lat: locations[0].latitude,
+  lng: locations[0].longitude,
 };
 
 function LocationMap() {
@@ -33,6 +34,11 @@ function LocationMap() {
     setMap(null);
   }, []);
 
+  const path = locations.map((location) => ({
+    lat: location.latitude,
+    lng: location.longitude,
+  }));
+
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
@@ -41,8 +47,7 @@ function LocationMap() {
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
-      {/* Child components, such as markers, info windows, etc. */}
-      <></>
+      <Polyline path={path} />
     </GoogleMap>
   ) : (
     <></>
