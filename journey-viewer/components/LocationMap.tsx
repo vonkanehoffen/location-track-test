@@ -15,7 +15,7 @@ const center = {
 };
 
 function LocationMap() {
-  const [accuracyCull, setAccuracyCull] = React.useState(20);
+  const [accuracyCull, setAccuracyCull] = React.useState(1000);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.NEXT_PUBLIC_GMAPS_API_KEY!,
@@ -37,28 +37,53 @@ function LocationMap() {
 
   console.log("culling", accuracyCull);
   const path = locations
-    // .filter((location) => location.accuracy > accuracyCull)
+    .filter((location) => location.accuracy < accuracyCull)
+    .sort((a, b) => a.timestamp - b.timestamp)
     .map((location) => ({
       lat: location.latitude,
       lng: location.longitude,
+      accuracy: location.accuracy,
+      timestamp: location.timestamp,
     }));
 
-  console.log(path.length);
+  const accuracies = path.map((location) => location.accuracy);
+  const minAccuracy = accuracies.reduce((a, b) => Math.min(a, b));
+  const maxAccuracy = accuracies.reduce((a, b) => Math.max(a, b));
+
+  console.log(path.length, minAccuracy, maxAccuracy);
+
+  const getStrokeColor = (location: any) => {
+    const v =
+      ((location.accuracy - minAccuracy) / (maxAccuracy - minAccuracy)) * 255;
+    return `rgb(${v}, ${v}, ${v})`;
+  };
 
   return isLoaded ? (
     <>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={10}
+        zoom={7}
         onLoad={onLoad}
         onUnmount={onUnmount}
       >
-        <Polyline path={path} />
+        {path.map((e, i) => (
+          <Polyline
+            key={e.timestamp}
+            path={[e, path[i + 1]]}
+            options={{
+              strokeColor: getStrokeColor(e),
+            }}
+          />
+        ))}
       </GoogleMap>
       <div className="absolute top-20 left-10 p-2 bg-white">
-        Accuracy cull
-        <input type="text" onChange={(e) => setAccuracyCull(+e.target.value)} />
+        <pre className="mr-2">Accuracy cull</pre>
+        <input
+          type="text"
+          value={accuracyCull}
+          onChange={(e) => setAccuracyCull(+e.target.value)}
+        />
       </div>
     </>
   ) : (
