@@ -15,6 +15,7 @@ const center = {
 };
 
 function LocationMap() {
+  const [accuracyCull, setAccuracyCull] = React.useState(20);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.NEXT_PUBLIC_GMAPS_API_KEY!,
@@ -34,24 +35,35 @@ function LocationMap() {
     setMap(null);
   }, []);
 
-  const path = locations.map((location) => ({
-    lat: location.latitude,
-    lng: location.longitude,
-  }));
+  console.log("culling", accuracyCull);
+  const path = locations
+    // .filter((location) => location.accuracy > accuracyCull)
+    .map((location) => ({
+      lat: location.latitude,
+      lng: location.longitude,
+    }));
+
+  console.log(path.length);
 
   return isLoaded ? (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={10}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-    >
-      <Polyline path={path} />
-    </GoogleMap>
+    <>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={10}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+      >
+        <Polyline path={path} />
+      </GoogleMap>
+      <div className="absolute top-20 left-10 p-2 bg-white">
+        Accuracy cull
+        <input type="text" onChange={(e) => setAccuracyCull(+e.target.value)} />
+      </div>
+    </>
   ) : (
     <></>
   );
 }
 
-export default React.memo(LocationMap);
+export default LocationMap;
